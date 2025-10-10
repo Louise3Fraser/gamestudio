@@ -1,19 +1,27 @@
 .letter {
   display: flex;
-  height: 30px;
-  width: 30px;
+  height: 15px;
+  width: 15px;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border-radius: 4px;
+  border: 1.25px solid var(--light);
+  background-color: transparent;
 }
 
-.hidden {
-  border: 1.5px solid #343434;
+.correct {
+  border: 1.25px solid var(--green);
+  background-color: var(--green);
 }
 
-.show {
-  background-color: #343434;
+.close {
+  border: 1.25px solid var(--red);
+  background-color: var(--red);
+}
+
+.wrong {
+  border: 1.25px solid var(--light);
+  background-color: var(--light);
 }
 
 .row {

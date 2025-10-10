@@ -4,26 +4,53 @@ import Row from "./components/Row";
 import Keyboard from "./components/Keyboard";
 
 const API_URL = "https://darkermango.github.io/5-Letter-words/words.json";
-const GUESSES = Array.from({ length: 5 });
 
 function App() {
   const [word, setWord] = useState("");
-  const [guess, setGuess] = useState("");
+  const [guesses, setGuesses] = useState(Array(6).fill(null));
+  const [curr, setCurr] = useState("");
+  const [isGameOver, setIsGameOver] = useState(false);
 
-  const handleKey = (k) => {
-    if (k == "ENTER") {
-      if (guess.length == 5) {
-        // make guess
-        console.log("guess!");
+  useEffect(() => {
+    const handleType = (event) => {
+      if (curr.length > 5) {
+        return;
       }
-    } else if (k == "BACKSPACE") {
-      setGuess(guess - k);
-    } else {
-      setGuess(guess + k);
-    }
 
-    console.log(guess);
-  };
+      if (event.key === "Enter") {
+        if (curr.length != 5) {
+          return;
+        }
+        const idx = guesses.findIndex((val) => val == null);
+        if (idx === -1) return;
+
+        const newGuesses = [...guesses];
+        newGuesses[idx] = curr.toLowerCase(); // <-- assignment fix
+        setGuesses(newGuesses);
+
+        if (curr.toLowerCase() === word) {
+          setIsGameOver(true);
+        }
+        setCurr("");
+        return;
+      }
+
+      if (event.key === "Backspace") {
+        setCurr(curr.slice(0, -1));
+        return;
+      }
+
+      setCurr((curr) => curr + event.key);
+    };
+
+    window.addEventListener("keydown", handleType);
+
+    return () => window.removeEventListener("keydown", handleType);
+  }, [curr]);
+
+  // const handleKey = (k) => {
+  //   console.log(guesses);
+  // };
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -39,13 +66,21 @@ function App() {
 
   return (
     <div className="main">
-      <h1>Lou-dle</h1>
+      <h1>loudle</h1>
       <div className="guesses">
-        {GUESSES.map((_, i) => (
-          <Row key={i} word={word} />
-        ))}
+        {guesses.map((guess, i) => {
+          const isCurrGuess = i === guesses.findIndex((val) => val == null);
+          return (
+            <Row
+              key={i}
+              guess={isCurrGuess ? curr : guess ?? ""}
+              isFinal={!isCurrGuess && guess != null}
+              solution={word}
+            />
+          );
+        })}
       </div>
-      <Keyboard onKey={handleKey} />
+      {/* <Keyboard onKey={handleKey} /> */}
     </div>
   );
 }
