@@ -1,0 +1,42 @@
+.letter {
+  display: flex;
+  height: 30px;
+  width: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.hidden {
+  border: 1.5px solid #343434;
+}
+
+.show {
+  background-color: #343434;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.char {
+  font-size: 28px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.key-row {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
