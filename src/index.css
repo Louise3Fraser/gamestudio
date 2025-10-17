@@ -1,72 +1,49 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: only dark;
-  background-color: rgba(0, 0, 0, 0.95);
-  --text-color: #f5f5f5;
-  --red: #df9246;
-  --blue: #19a2a9;
-  --green: #82a816;
-  --light: #251a09;
+@import "tailwindcss";
 
-  --dock-bg-1: rgba(255, 255, 255, 0.05);
-  --dock-bg-2: rgba(255, 255, 255, 0.03);
-  --dock-stroke: rgba(255, 255, 255, 0.03);
-  --dock-shadow: rgba(0, 0, 0, 0.45);
-  --zoom: 1.08; /* how much to slowly zoom in/out */
-  --rotate: -3deg; /* slight tilt */
-  --duration: 60s; /* slower = calmer */
+@theme {
+  --font-mono: "Fira Mono", monospace;
+  --color-bg-1: rgba(0, 0, 0, 0.95);
+  --color-text: rgba(245, 245, 245, 1);
+  --color-red: rgba(223, 146, 70, 1);
+  --color-blue: rgba(25, 162, 169, 1);
+  --color-green: rgba(130, 168, 22, 1);
+  --color-light: rgba(37, 26, 9, 1);
+  --color-dock-bg-1: rgba(255, 255, 255, 0.05);
+  --color-dock-bg-2: rgba(255, 255, 255, 0.03);
+  --color-dock-stroke: rgba(255, 255, 255, 0.03);
+  --color-black: #000;
+  --color-white: #fff;
+  --drop-shadow-xs: 0 1px 1px rgb(0 0 0 / 0.05);
+  --text-sm: 12px;
+  --text-base: 13px;
 }
 
-body,
-html {
-  height: 100%;
-  margin: 0;
-}
+@layer base {
+  html {
+    background-color: var(--color-bg-1);
+    color-scheme: only dark;
+  }
+  body {
+    @apply text-text font-mono;
+  }
 
-.main-root {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  z-index: -1;
-}
-.main-root::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  transform: translate(-50%, -30%) rotate(300deg) scale(1);
+  button {
+    @apply inline-flex items-center justify-center
+      rounded-[8px] px-4 py-2
+      bg-blue text-white font-mono
+      text-[13px] tracking-wide
+      transition-all duration-150
+      hover:bg-green active:scale-[0.98]
+      focus:outline-none focus:ring-2 focus:ring-blue/40;
+  }
 
-  background: radial-gradient(
-      50% 50% at 50% 100%,
-      /* centered vignette */ rgba(0, 0, 0, 0) 20%,
-      /* transparent center */ rgba(0, 0, 0, 0.95) 90%,
-      /* soft black falloff */ rgba(0, 0, 0, 1) 100% /* full black edge */
-    ),
-    url("./assets/gradient.png");
+  h1 {
+    font-size: var(--text-base);
+  }
 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 1;
-  filter: blur(10px);
-  border: 1px solid black;
-}
-
-h1 {
-  font-family: "Fira Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 13px;
-  margin: 0px;
-}
-
-h2 {
-  font-family: "Fira Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 12px;
-  margin: 0px;
+  h2 {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+  }
 }
