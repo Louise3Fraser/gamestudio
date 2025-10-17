@@ -1,0 +1,106 @@
+:root {
+  /* background ramp */
+  --color-bg1: #6c00a2; /* was rgb(108,0,162) */
+  --color-bg2: #ffffff;
+
+  /* blob palette (hex) */
+  --color1: #512e97; /* deep violet */
+  --color2: #e087ca; /* pink violet */
+  --color3: #f69c5a; /* warm orange */
+  --color4: #feb551; /* peach */
+  --color5: #272e82; /* royal blue */
+  --color-interactive: #000000;
+
+  --circle-size: 70%; /* slightly smaller for bottom cluster */
+  --blending: hard-light;
+}
+
+/* util: color with alpha while keeping hex vars */
+@function mixAlpha($hex, $alpha) {
+  @return color-mix(in srgb, #0000 (1 - $alpha) * 100%, $hex $alpha * 100%);
+}
+
+/* animations (slower) */
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-20%);
+  }
+  50% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(-20%);
+  }
+}
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-20%) translateY(-5%);
+  }
+  50% {
+    transform: translateX(20%) translateY(5%);
+  }
+  100% {
+    transform: translateX(-20%) translateY(-5%);
+  }
+}
+
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  opacity: 0.7;
+  svg {
+    position: fixed;
+    inset: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .gradients-container {
+    position: absolute;
+    inset: 0;
+    /* nudge the whole field down to consolidate at bottom */
+    transform: translateY(22%);
+    filter: url(#goo) blur(40px);
+  }
+
+  .g1,
+  .g2,
+  .g3,
+  .g4,
+  .g5,
+  .interactive {
+    position: absolute;
+    mix-blend-mode: var(--blending);
+    /* ovalize all blobs a bit */
+    transform: scaleX(1.2) scaleY(0.8);
+  }
+
+  .interactive {
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(
+        circle at center,
+        #{mixAlpha(var(--color-interactive), 0.8)} 0%,
+        #0000 50%
+      )
+      no-repeat;
+    opacity: 0.6;
+  }
+}
