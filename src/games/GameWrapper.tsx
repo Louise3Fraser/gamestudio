@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router";
 import { motion } from "motion/react";
-import Logo from "../Logo.jsx";
+import Logo from "../components/branding/Logo";
 
 export default function GameWrapper() {
   const navigate = useNavigate();
@@ -14,7 +14,9 @@ export default function GameWrapper() {
       <nav className="sticky top-0 z-[50] flex items-center gap-[12px] p-[14px_18px]">
         <button onClick={() => navigate(-1)}>← back</button>
         <div className="flex-1" />
-        <Logo size={32} className="ml-auto" />
+        <div className="ml-auto">
+          <Logo size={32} />
+        </div>
       </nav>
 
       <main className="p-[20px]">

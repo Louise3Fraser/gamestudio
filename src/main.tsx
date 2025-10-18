@@ -1,12 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
-import Wordle from "./components/games/wordle/Wordle.jsx";
+import App from "./App.js";
+import Wordle from "./games/wordle/Wordle";
 import { BrowserRouter, Routes, Route } from "react-router";
-import GameWrapper from "./components/games/GameWrapper.jsx";
+import GameWrapper from "./games/GameWrapper";
 
-createRoot(document.getElementById("root")).render(
+const container = document.getElementById("root") as HTMLElement;
+createRoot(container).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>

@@ -16,6 +16,37 @@ import {
   useState,
 } from "react";
 
+import type { MotionValue, SpringOptions } from "motion";
+
+type DockItemData = {
+  img: string;
+  alt?: string;
+  onClick?: () => void;
+  className?: string;
+  label?: string;
+};
+
+type DockProps = {
+  items: DockItemData[];
+  spring?: SpringOptions;
+  magnification?: number; // px
+  distance?: number; // px (influence radius)
+  panelHeight?: number; // px (collapsed height)
+  dockHeight?: number; // px (min expanded height)
+  baseItemSize?: number; // px
+};
+
+type DockItemProps = {
+  children: React.ReactNode;
+  onClick?: () => void;
+  mouseX: MotionValue<number>;
+  spring: SpringOptions;
+  distance: number;
+  magnification: number;
+  baseItemSize: number;
+  className?: string;
+};
+
 function DockItem({
   children,
   onClick,
@@ -24,15 +55,17 @@ function DockItem({
   distance,
   magnification,
   baseItemSize,
-}) {
-  const ref = useRef(null);
+}: DockItemProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
   const isHovered = useMotionValue(0);
 
   const mouseDistance = useTransform(mouseX, (val) => {
-    const rect = ref.current?.getBoundingClientRect() ?? {
-      x: 0,
-      width: baseItemSize,
-    };
+    const rect =
+      ref.current?.getBoundingClientRect() ??
+      ({
+        x: 0,
+        width: baseItemSize,
+      } as DOMRect);
     return val - rect.x - baseItemSize / 2;
   });
 
@@ -69,12 +102,25 @@ function DockItem({
       role="button"
       aria-haspopup="true"
     >
-      {Children.map(children, (child) => cloneElement(child, { isHovered }))}
+      {Children.map(
+        children as React.ReactElement | React.ReactElement[],
+        (child) =>
+          cloneElement(
+            child as React.ReactElement,
+            { isHovered } as unknown as { isHovered: MotionValue<number> }
+          )
+      )}
     </motion.div>
   );
 }
 
-function DockLabel({ children, className = "", ...rest }) {
+type DockLabelProps = {
+  children: React.ReactNode;
+  className?: string;
+  isHovered: MotionValue<number>;
+};
+
+function DockLabel({ children, className = "", ...rest }: DockLabelProps) {
   const { isHovered } = rest;
   const [isVisible, setIsVisible] = useState(false);
 
@@ -104,7 +150,7 @@ function DockLabel({ children, className = "", ...rest }) {
   );
 }
 
-function DockIcon({ item }) {
+function DockIcon({ item }: { item: DockItemData }) {
   return (
     <img
       className={"flex w-full items-center justify-center"}
@@ -122,7 +168,7 @@ export default function Dock({
   panelHeight = 68,
   dockHeight = 256,
   baseItemSize = 50,
-}) {
+}: DockProps) {
   const mouseX = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
 
