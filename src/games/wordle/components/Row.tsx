@@ -1,11 +1,17 @@
 import "./Comp.css";
+import React, { JSX } from "react";
 
-export default function Row({ guess, isFinal, solution }) {
-  const block = [];
+type Props = {
+  guess: string;
+  isFinal: boolean;
+  solution: string;
+};
+export default function Row({ guess, isFinal, solution }: Props) {
+  const block: JSX.Element[] = [];
 
   for (let i = 0; i < 5; i++) {
     let className = "letter";
-    const char = guess[i];
+    const char = guess[i] ?? "";
 
     if (isFinal) {
       if (char === solution[i]) {

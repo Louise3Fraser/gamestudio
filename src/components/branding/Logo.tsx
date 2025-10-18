@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
-import logoSrc from "../assets/logo.png";
+import logoSrc from "../../assets/logo.png";
 
-export default function Logo({ size = 40 }) {
+type Props = {
+  size: number;
+};
+
+export default function Logo({ size = 40 }: Props) {
   return (
     <motion.img
       src={logoSrc}

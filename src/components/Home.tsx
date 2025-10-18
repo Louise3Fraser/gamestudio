@@ -1,19 +1,25 @@
-import Clock from "./Clock";
+import Clock from "./data-display/Clock";
 import loudle from "../assets/game-icons/loudle.png";
 import random from "../assets/game-icons/random.png";
 import scary from "../assets/game-icons/scarygame.png";
 import orange from "../assets/game-icons/orange.png";
 import adventure from "../assets/game-icons/adventure.png";
 import test from "../assets/game-icons/test.png";
-import Dock from "./Dock";
-import Info from "./Info";
-import Logo from "./Logo";
+import Dock from "./layout/Dock";
+import Info from "./data-display/Info";
+import Logo from "./branding/Logo";
 import { useNavigate } from "react-router";
+
+type GameItem = {
+  img: string;
+  alt: string;
+  onClick?: () => void;
+};
 
 function Home() {
   let navigate = useNavigate();
 
-  const games = [
+  const games: GameItem[] = [
     { img: adventure, alt: "..." },
     { img: test, alt: "..." },
     { img: orange, alt: "..." },

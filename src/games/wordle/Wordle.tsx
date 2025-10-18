@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-import Row from "./components/Row.jsx";
+import Row from "./components/Row.js";
 // import Keyboard from "./games/wordle/components/Keyboard";
 
 const API_URL = "https://darkermango.github.io/5-Letter-words/words.json";
 
+type Guess = string | null;
+interface WordsResponse {
+  words: string[];
+}
+
 function Wordle() {
-  const [word, setWord] = useState("");
-  const [guesses, setGuesses] = useState(Array(6).fill(null));
-  const [curr, setCurr] = useState("");
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [word, setWord] = useState<string>("");
+  const [guesses, setGuesses] = useState<Guess[]>(Array(6).fill(null));
+  const [curr, setCurr] = useState<string>("");
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleType = (event) => {
+    const handleType = (event: KeyboardEvent) => {
       if (curr.length > 5) {
         return;
       }
@@ -24,7 +29,7 @@ function Wordle() {
         if (idx === -1) return;
 
         const newGuesses = [...guesses];
-        newGuesses[idx] = curr.toLowerCase(); // <-- assignment fix
+        newGuesses[idx] = curr.toLowerCase();
         setGuesses(newGuesses);
 
         if (curr.toLowerCase() === word) {
@@ -54,11 +59,10 @@ function Wordle() {
   useEffect(() => {
     const fetchWord = async () => {
       const response = await fetch(API_URL);
-      const words = await response.json();
+      const data = (await response.json()) as WordsResponse;
       const randomWord =
-        words.words[Math.floor(Math.random() * words.words.length)];
+        data.words[Math.floor(Math.random() * data.words.length)];
       setWord(randomWord);
-      console.log(randomWord);
     };
     fetchWord();
   }, []);
